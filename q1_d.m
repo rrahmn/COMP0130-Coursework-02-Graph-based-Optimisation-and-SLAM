@@ -30,25 +30,37 @@ results = minislam.mainLoop(simulator, drivebotSLAMSystem);
 % the axes.
 
 % Plot optimisation times
-minislam.graphics.FigureManager.getFigure('Optimization times');
-clf
-plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
-hold on
+% minislam.graphics.FigureManager.getFigure('Optimization times');
+% clf
+% plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
+% hold on
 
 % Plot the error curves
-minislam.graphics.FigureManager.getFigure('Errors');
-clf
-plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleStateHistory')
+% minislam.graphics.FigureManager.getFigure('Errors');
+% clf
+% plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleStateHistory')
 
 % Plot covariance
 minislam.graphics.FigureManager.getFigure('Vehicle Covariances');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 hold on
+%labels and legend
+xlabel("Time")
+ylabel("Covariance")
+legend('x', 'y', 'phi', 'Location','best')
+%saving
+saveas(gcf, 'latex10', 'png');
 
 % Plot errors
 minislam.graphics.FigureManager.getFigure('Errors');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
 hold on
+%labels and legend
+xlabel("Time")
+ylabel("Error")
+legend('x', 'y', 'phi', 'Location','best')
+%saving
+saveas(gcf, 'latex11', 'png');
 
