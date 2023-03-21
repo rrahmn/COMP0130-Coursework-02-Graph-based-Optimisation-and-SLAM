@@ -30,22 +30,32 @@ results = minislam.mainLoop(simulator, drivebotSLAMSystem);
 % results. For your report, you need to look at improving these figures
 % including labelling axes, etc.
 
-% Plot optimisation times
-minislam.graphics.FigureManager.getFigure('Optimization times');
-clf
-plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
-hold on
+% % Plot optimisation times
+% minislam.graphics.FigureManager.getFigure('Optimization times');
+% clf
+% plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
+% hold on
 
 % Plot the error curves
 minislam.graphics.FigureManager.getFigure('Errors');
 clf
 %this said vehicle state history - vehicle state history before
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory') 
-
+%labels and legend
+xlabel("Time")
+ylabel("Error")
+legend('x', 'y', 'phi', 'Location','best')
+%saving
+saveas(gcf, 'latex2', 'png');
 
 % Plot covariance
 minislam.graphics.FigureManager.getFigure('Vehicle Covariances');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
+xlabel("Time")
+ylabel("Covariances")
+legend('x', 'y', 'phi', 'Location','best')
+%saving
+saveas(gcf, 'latex3', 'png');
 hold on
 
