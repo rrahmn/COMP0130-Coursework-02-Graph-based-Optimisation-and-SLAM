@@ -288,10 +288,10 @@ classdef DriveBotSLAMSystem < minislam.slam.SLAMSystem
         
         function handleGPSObservationEvent(this, event)
 
-            % Q1c:
+            % Q1d:
             % Create a GPS measurement edge and add it to the graph
             warning('drivebotslam:handlegpsobservationevent:unimplemented', ...
-                'Implement the rest of this method for Q1c.');
+                'Implement the rest of this method for Q1d.');
         end
         
         function handleCompassObservationEvent(this, event)

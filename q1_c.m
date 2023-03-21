@@ -14,6 +14,11 @@ configuration.compassAngularOffset=0.75*pi;
 % value set to true.
 configuration.perturbWithNoise = true;
 
+%q1c
+%Modify the script q1 c.m so that the simulator will generate 
+% compass measurements
+configuration.enableCompass = true;
+
 % Set up the simulator
 simulator = drivebot.DriveBotSimulator(configuration, 'q1_c');
 
@@ -40,27 +45,48 @@ minislam.graphics.FigureManager.getFigure('Optimization times');
 clf
 plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
 hold on
+xlabel("Time step axis")
+ylabel("Time taken for optimisation seconds")
+saveas(gcf, 'latex4_after', 'png');
 
 % Plot the error curves
 minislam.graphics.FigureManager.getFigure('Errors');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleStateHistory')
 
+
 % Plot covariance
 minislam.graphics.FigureManager.getFigure('Vehicle Covariances');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 hold on
+%labels and legend
+xlabel("Time")
+ylabel("Covariance")
+legend('x', 'y', 'phi', 'Location','best')
+%saving
+saveas(gcf, 'latex5_after', 'png');
 
 % Plot errors
 minislam.graphics.FigureManager.getFigure('Errors');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
 hold on
+%labels and legend
+xlabel("Time")
+ylabel("Error")
+legend('x', 'y', 'phi', 'Location','best')
+%saving
+saveas(gcf, 'latex6_after', 'png');
 
 % Plot chi2 values
 minislam.graphics.FigureManager.getFigure('chi2');
 clf
 plot(results{1}.chi2Time, log(results{1}.chi2History))
 hold on
+%labels and legend
+xlabel("Time")
+ylabel("log of chi2")
+%saving
+saveas(gcf, 'latex7_after', 'png');
 
