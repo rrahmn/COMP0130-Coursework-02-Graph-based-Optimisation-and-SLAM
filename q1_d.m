@@ -46,9 +46,10 @@ clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("Covariance")
 legend('x', 'y', 'phi', 'Location','best')
+title("Covariances vs time")
 %saving
 saveas(gcf, 'latex10', 'png');
 
@@ -58,9 +59,10 @@ clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("Error")
 legend('x', 'y', 'phi', 'Location','best')
+title("Errors vs time")
 %saving
 saveas(gcf, 'latex11', 'png');
 

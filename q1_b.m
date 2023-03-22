@@ -45,6 +45,7 @@ plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.veh
 xlabel("Time")
 ylabel("Error")
 legend('x', 'y', 'phi', 'Location','best')
+title("Error vs time")
 %saving
 saveas(gcf, 'latex2', 'png');
 
@@ -55,6 +56,7 @@ plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 xlabel("Time")
 ylabel("Covariances")
 legend('x', 'y', 'phi', 'Location','best')
+title("Covariances vs time")
 %saving
 saveas(gcf, 'latex3', 'png');
 hold on

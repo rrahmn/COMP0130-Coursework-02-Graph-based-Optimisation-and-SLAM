@@ -45,8 +45,9 @@ minislam.graphics.FigureManager.getFigure('Optimization times');
 clf
 plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
 hold on
-xlabel("Time step axis")
+xlabel("Time in seconds")
 ylabel("Time taken for optimisation seconds")
+title("Optimisation times vs time")
 saveas(gcf, 'latex4_after', 'png');
 
 % Plot the error curves
@@ -61,9 +62,10 @@ clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("Covariance")
 legend('x', 'y', 'phi', 'Location','best')
+title("Covariances vs time")
 %saving
 saveas(gcf, 'latex5_after', 'png');
 
@@ -73,9 +75,10 @@ clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("Error")
 legend('x', 'y', 'phi', 'Location','best')
+title("Errors vs time")
 %saving
 saveas(gcf, 'latex6_after', 'png');
 
@@ -85,8 +88,9 @@ clf
 plot(results{1}.chi2Time, log(results{1}.chi2History))
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("log of chi2")
+title("log of chi2 vs time")
 %saving
 saveas(gcf, 'latex7_after', 'png');
 

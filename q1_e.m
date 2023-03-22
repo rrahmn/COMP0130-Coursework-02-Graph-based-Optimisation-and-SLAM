@@ -39,8 +39,9 @@ minislam.graphics.FigureManager.getFigure('Optimization times');
 clf
 plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
 hold on
-xlabel("Time axis")
+xlabel("Time in seconds")
 ylabel("Time taken for optimisation seconds")
+title("Optimisation times vs time")
 saveas(gcf, 'latex12_aftercompass', 'png');
 
 % Plot covariance
@@ -49,9 +50,10 @@ clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("Covariance")
 legend('x', 'y', 'phi', 'Location','best')
+title("Covariances vs time")
 %saving
 saveas(gcf, 'latex13_aftercompass', 'png');
 
@@ -61,9 +63,10 @@ clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("Error")
 legend('x', 'y', 'phi', 'Location','best')
+title("Errors vs time")
 %saving
 saveas(gcf, 'latex14_aftercompass', 'png');
 
@@ -73,8 +76,9 @@ clf
 plot(results{1}.chi2Time, results{1}.chi2History)
 hold on
 %labels and legend
-xlabel("Time")
+xlabel("Time in seconds")
 ylabel("log of chi2")
+title("log of chi2 vs time")
 %saving
 saveas(gcf, 'latex15_aftercompass', 'png');
 

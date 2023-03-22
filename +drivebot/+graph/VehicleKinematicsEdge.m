@@ -71,8 +71,9 @@ classdef VehicleKinematicsEdge < g2o.core.BaseBinaryEdge
             
             % Compute the error. (jusst by rearranging vehicle process
             % model)
-            this.errorZ = Mi * (this.edgeVertices{2}.x ...
-                - priorX)/this.dT - this.z;
+            dx = this.edgeVertices{2}.x - priorX;
+            dx(3) = g2o.stuff.normalize_theta(dx(3)); %wrangle to -pi, pi
+            this.errorZ = Mi * (dx)/this.dT - this.z;
             
             % Wrap the heading error to -pi to pi
             this.errorZ(3) = g2o.stuff.normalize_theta(this.errorZ(3));
@@ -94,6 +95,7 @@ classdef VehicleKinematicsEdge < g2o.core.BaseBinaryEdge
             c = cos(priorX(3));
             s = sin(priorX(3));
             dx = this.edgeVertices{2}.x - priorX;
+            dx(3) = g2o.stuff.normalize_theta(dx(3));
             Mi = [c s 0;
                 -s c 0;
                 0 0 1];
