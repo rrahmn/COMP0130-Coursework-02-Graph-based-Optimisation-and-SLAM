@@ -1,8 +1,5 @@
 % This script runs Q2(d)
-rng(123); %to make results repeatable by setting random seed. remove this 
-% line to get different results each time .
-
-
+rng(123); %to make results repeatable by setting random seed. remove this line to make 
 % Create the configuration object.
 configurationBeforeLoopClosure = drivebot.SimulatorConfiguration();
 configurationAfterLoopClosure = drivebot.SimulatorConfiguration();
@@ -62,17 +59,7 @@ saveas(gcf, 'latex19_after_loop_closure', 'png');
 for i = 1:length(covariance_history_AfterLoopClosure)
     fprintf("#########################\n")
     fprintf("landmark " + num2str(i) + "\n")
-
-    fprintf("Determinant of landmark covariance before loop closure: ")
-    det(covariance_history_BeforeLoopClosure(:,:,i))
-
-    fprintf("Determinant of landmark covariance after loop closure: ")
-    det(covariance_history_AfterLoopClosure(:,:,i))
-
     fprintf("Difference in determinant of landmark covariance before and after loop closure: ")
-    -det(covariance_history_BeforeLoopClosure(:,:,i)) + det(covariance_history_AfterLoopClosure(:,:,i))
-
-    fprintf("Percentage change in determinant of landmark covariance before and after loop closure: ")
-    100*(-det(covariance_history_BeforeLoopClosure(:,:,i)) + det(covariance_history_AfterLoopClosure(:,:,i)))/det(covariance_history_BeforeLoopClosure(:,:,i))
+    det(covariance_history_BeforeLoopClosure(:,:,i)) - det(covariance_history_AfterLoopClosure(:,:,i))
     fprintf("#########################\n")
 end
