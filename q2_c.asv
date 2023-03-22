@@ -85,21 +85,15 @@ for i = 1:length(allVertices)
     numLandmarks = numLandmarks + (class(allVertices{1,i}) == "drivebot.graph.LandmarkStateVertex");
 end
 
-fprintf("the number of vehicle poses stored: " + num2str(numVehicleVertices) +"\n")
-fprintf("the number of landmarks initalized: " + num2str(numLandmarks)+"\n")
+fprintf("the number of vehicle poses stored: " + num2str(numVehicleVertices))
+fprintf("the number of landmarks initalized: " + num2str(numLandmarks))
 
 landmarkEdges = 0;
 for i = 1:length(allEdges)
     %cycle through edges and check whether we have a landmark edge
     landmarkEdges = landmarkEdges + (class(allEdges{1,i})=="drivebot.graph.LandmarkRangeBearingEdge");
 end
-%each landmark edge is an observation. we divide by the total number of
-%time steps to get the average per timestep
-fprintf("the average number of observations made by a robot at each timestep: " + num2str(landmarkEdges/length(results{1, 1}.vehicleTrueStateTime))+"\n")
+fprintf("the average number of observations made by a robot at each timestep: " + num2str(landmarkEdges/length(results.veh)))
 
-%each landmark edge is an observation. we divide by the total number of
-%landmarks to get the average observations per landmark
-fprintf("the average number of observations received by each landmark: " + num2str(landmarkEdges/numLandmarks)+"\n")
-
-% warning('q2_c:unimplemented', ...
-%         'Implement the rest of the graph query code for Q2c.')
+warning('q2_c:unimplemented', ...
+        'Implement the rest of the graph query code for Q2c.')
