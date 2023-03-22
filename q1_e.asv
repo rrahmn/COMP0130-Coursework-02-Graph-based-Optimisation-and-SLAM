@@ -7,7 +7,7 @@ configuration = drivebot.SimulatorConfiguration();
 configuration.enableGPS = true;
 
 % Set to true for part ii
-configuration.enableCompass = true;
+configuration.enableCompass = false;
 
 % Set up the simulator
 simulator = drivebot.DriveBotSimulator(configuration, 'q1_e');
@@ -26,6 +26,7 @@ drivebotSLAMSystem.setRecommendOptimizationPeriod(configuration.DT);
 drivebotSLAMSystem.setValidateGraph(false);
 
 
+%Q1(e)ii:
 
 
 % Run the main loop and correct results
@@ -39,43 +40,28 @@ minislam.graphics.FigureManager.getFigure('Optimization times');
 clf
 plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
 hold on
-xlabel("Time axis")
-ylabel("Time taken for optimisation seconds")
-saveas(gcf, 'latex12_aftercompass', 'png');
+
+% Plot the error curves
+minislam.graphics.FigureManager.getFigure('Errors');
+clf
+plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleStateHistory')
 
 % Plot covariance
 minislam.graphics.FigureManager.getFigure('Vehicle Covariances');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 hold on
-%labels and legend
-xlabel("Time")
-ylabel("Covariance")
-legend('x', 'y', 'phi', 'Location','best')
-%saving
-saveas(gcf, 'latex13_aftercompass', 'png');
 
 % Plot errors
 minislam.graphics.FigureManager.getFigure('Errors');
 clf
 plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
 hold on
-%labels and legend
-xlabel("Time")
-ylabel("Error")
-legend('x', 'y', 'phi', 'Location','best')
-%saving
-saveas(gcf, 'latex14_aftercompass', 'png');
 
 % Plot chi2 values
 minislam.graphics.FigureManager.getFigure('chi2 values');
 clf
 plot(results{1}.chi2Time, results{1}.chi2History)
 hold on
-%labels and legend
-xlabel("Time")
-ylabel("log of chi2")
-%saving
-saveas(gcf, 'latex15_aftercompass', 'png');
 
 
