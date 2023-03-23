@@ -32,8 +32,9 @@ drivebotSLAMSystem.setRecommendOptimizationPeriod(500);
 
 % Set whether the SLAM system should remove prediction edges. If the first
 % value is true, the SLAM system should remove the edges. If the second is
-% true, the first prediction edge will be retained.
-drivebotSLAMSystem.setRemovePredictionEdges(false, true);
+% true, the first prediction edge will be retained. (keeping first edge is
+% working solution)
+drivebotSLAMSystem.setRemovePredictionEdges(true, true);
 
 % Run the main loop and correct results
 results = minislam.mainLoop(simulator, drivebotSLAMSystem);
@@ -41,26 +42,53 @@ results = minislam.mainLoop(simulator, drivebotSLAMSystem);
 % Minimal output plots. For your answers, please provide titles and label
 % the axes.
 
+
+
 % Plot optimisation times
 minislam.graphics.FigureManager.getFigure('Optimization times');
 clf
-plot(results{1}.optimizationTimes, '*')
+plot(results{1}.vehicleStateTime, results{1}.optimizationTimes, '*')
 hold on
-
-% Plot the error curves
-minislam.graphics.FigureManager.getFigure('Errors');
-clf
-plot(results{1}.vehicleStateHistory'-results{1}.vehicleStateHistory')
+xlabel("Time axis")
+ylabel("Time taken for optimisation seconds")
+title("optimisation times vs time")
+saveas(gcf, 'latex20_removed', 'png');
 
 % Plot covariance
 minislam.graphics.FigureManager.getFigure('Vehicle Covariances');
 clf
-plot(results{1}.vehicleCovarianceHistory')
+plot(results{1}.vehicleStateTime, results{1}.vehicleCovarianceHistory')
 hold on
+%labels and legend
+xlabel("Time in seconds")
+ylabel("Covariance")
+legend('x', 'y', 'phi', 'Location','best')
+title("Covariances vs time")
+%saving
+saveas(gcf, 'latex21_removed', 'png');
 
-% Plot errors
+% Plot chi2 values
+minislam.graphics.FigureManager.getFigure('chi2 values');
+clf
+plot(results{1}.chi2Time, results{1}.chi2History)
+hold on
+%labels and legend
+xlabel("Time in seconds")
+ylabel("log of chi2")
+title("log of chi2 vs time")
+%saving
+saveas(gcf, 'latex22_removed', 'png');
+
+
+
+% % Plot errors
 minislam.graphics.FigureManager.getFigure('Errors');
 clf
-plot(results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
+plot(results{1}.vehicleStateTime, results{1}.vehicleStateHistory'-results{1}.vehicleTrueStateHistory')
 hold on
-
+%labels and legend
+xlabel("Time")
+ylabel("Error")
+legend('x', 'y', 'phi', 'Location','best')
+%saving
+saveas(gcf, 'latex23_removed', 'png');

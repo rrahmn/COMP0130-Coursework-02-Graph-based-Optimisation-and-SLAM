@@ -351,9 +351,25 @@ classdef DriveBotSLAMSystem < minislam.slam.SLAMSystem
         
         function deleteVehiclePredictionEdges(this)
 
-            % Q3a:            
-            warning('drivebotslam:deletevehiclepredictionedges:unimplemented', ...
-                'Implement the rest of this method for Q3a.');
+            % Q3a:     
+            allEdges = this.graph.edges(); %all edges
+            flagFirstEdge = true; %flag to track whether we're on first edge
+
+            %cycle through edges
+            for i = 1:length(allEdges)
+                
+                %check for vehicle kinematics edges
+                if(class(allEdges{i}) == "drivebot.graph.VehicleKinematicsEdge")
+                    %first edge found
+                    if(flagFirstEdge && this.keepFirstPredictionEdge)
+                        continue
+                    end
+                    flagFirstEdge=
+                end
+            end
+
+%             warning('drivebotslam:deletevehiclepredictionedges:unimplemented', ...
+%                 'Implement the rest of this method for Q3a.');
         end
         
         
