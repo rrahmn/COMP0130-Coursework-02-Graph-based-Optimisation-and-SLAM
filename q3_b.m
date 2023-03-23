@@ -1,4 +1,4 @@
-% This script runs Q3(a)
+% This script runs Q3(b)
 
 % Create the configuration object.
 configuration = drivebot.SimulatorConfiguration();
@@ -36,13 +36,20 @@ drivebotSLAMSystem.setRecommendOptimizationPeriod(500);
 % working solution)
 drivebotSLAMSystem.setRemovePredictionEdges(true, true);
 
+
+
+
+%set pruning flag to true and at each vehicle vertex we keep at most 2 landmark
+%edges
+drivebotSLAMSystem.setPruningFlagAndMaxLandmarks(true, 2)
+
 % Run the main loop and correct results
 results = minislam.mainLoop(simulator, drivebotSLAMSystem);
 
 % Minimal output plots. For your answers, please provide titles and label
 % the axes.
 
-
+%%
 
 % Plot optimisation times
 minislam.graphics.FigureManager.getFigure('Optimization times');
@@ -52,7 +59,7 @@ hold on
 xlabel("Time axis")
 ylabel("Time taken for optimisation seconds")
 title("optimisation times vs time")
-saveas(gcf, 'latex20_removed', 'png');
+saveas(gcf, 'latex20_pruned', 'png');
 
 % Plot covariance
 minislam.graphics.FigureManager.getFigure('Vehicle Covariances');
@@ -65,7 +72,7 @@ ylabel("Covariance")
 legend('x', 'y', 'phi', 'Location','best')
 title("Covariances vs time")
 %saving
-saveas(gcf, 'latex21_removed', 'png');
+saveas(gcf, 'latex21_pruned', 'png');
 
 % Plot chi2 values
 minislam.graphics.FigureManager.getFigure('chi2 values');
@@ -77,7 +84,7 @@ xlabel("Time in seconds")
 ylabel("log of chi2")
 title("log of chi2 vs time")
 %saving
-saveas(gcf, 'latex22_removed', 'png');
+saveas(gcf, 'latex22_pruned', 'png');
 
 
 
@@ -91,4 +98,8 @@ xlabel("Time")
 ylabel("Error")
 legend('x', 'y', 'phi', 'Location','best')
 %saving
-saveas(gcf, 'latex23_removed', 'png');
+saveas(gcf, 'latex23_pruned', 'png');
+
+graph = drivebotSLAMSystem.optimizer();
+fprintf("Number of vertices" + num2str(length(graph.vertices())) + "\n")
+fprintf("Number of edges" + num2str(length(graph.edges())) + "\n")

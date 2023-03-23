@@ -92,3 +92,7 @@ ylabel("Error")
 legend('x', 'y', 'phi', 'Location','best')
 %saving
 saveas(gcf, 'latex23_removed', 'png');
+
+graph = drivebotSLAMSystem.optimizer();
+fprintf("Number of vertices" + num2str(length(graph.vertices())) + "\n")
+fprintf("Number of edges" + num2str(length(graph.edges())) + "\n")

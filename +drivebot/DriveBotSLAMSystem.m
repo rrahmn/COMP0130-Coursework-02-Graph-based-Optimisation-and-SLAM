@@ -46,6 +46,13 @@ classdef DriveBotSLAMSystem < minislam.slam.SLAMSystem
         % question Q3a
         removePredictionEdgesFromGraph;
         keepFirstPredictionEdge;
+
+        %Q3b
+        %flag for pruning in Q3b
+        pruneGraph;
+        %maximum number of observed landmark edges we keep per vehicle vertex after
+        %pruning
+        pruningLandmarkMaxEdges;
         
     end
     
@@ -75,6 +82,12 @@ classdef DriveBotSLAMSystem < minislam.slam.SLAMSystem
             
             this.removePredictionEdgesFromGraph = false;
             this.keepFirstPredictionEdge = false;
+
+            %Q3b
+            %by default do not prune 
+            this.pruneGraph = false;
+            %keep all landmark edges by default
+            this.pruningLandmarkMaxEdges = inf;
         end
         
         % Destroy the graph when we destroy the SLAM system.
@@ -183,6 +196,12 @@ classdef DriveBotSLAMSystem < minislam.slam.SLAMSystem
             if (this.removePredictionEdgesFromGraph == true)
                 this.deleteVehiclePredictionEdges();
             end
+
+            %Q3b
+            %Prune if requested
+            if(this.pruneGraph==true)
+                this.pruningFunction();
+            end
             
             % Now call the actual optimizer. Let it handle the default if
             % no steps are specified.
@@ -198,6 +217,14 @@ classdef DriveBotSLAMSystem < minislam.slam.SLAMSystem
             this.removePredictionEdgesFromGraph = removeEdges;
             this.keepFirstPredictionEdge = keepFirst;
             
+        end
+
+        %Q3b
+        %function to set whether we prune and the max number of landmarks
+        %edges kept at each vehicle vertex
+        function setPruningFlagAndMaxLandmarks(this, pruneGraph, pruningLandmarkMaxEdges)
+            this.pruneGraph = pruneGraph;
+            this.pruningLandmarkMaxEdges = pruningLandmarkMaxEdges;
         end
     end
     
@@ -376,6 +403,70 @@ classdef DriveBotSLAMSystem < minislam.slam.SLAMSystem
 
 %             warning('drivebotslam:deletevehiclepredictionedges:unimplemented', ...
 %                 'Implement the rest of this method for Q3a.');
+        end
+
+        %Q3b
+        %pruning function
+        function pruningFunction(this)
+            
+            %get all vertices
+            allVertices = this.graph.vertices();
+            
+            %cycle through them
+            for i = 1 : length(allVertices)
+                %if we get a vehicle vertex
+                if(class(allVertices{i}) == "drivebot.graph.VehicleStateVertex")
+                    
+                    %if we have less edges than the max number, then do
+                    %nothing
+                    if(allVertices{i}.numberOfEdges() <= this.pruningLandmarkMaxEdges)
+                        continue
+                    end
+
+                    %if we have more edges than we want, find the landmark
+                    %edges
+                    landmarkEdgesPruning = allVertices{i}.edges();
+
+                    %cycle through to make sure we have all landmark edges
+                    removeTheseIndices = [];
+                    for j = 1 : length(landmarkEdgesPruning)
+                        if(class(landmarkEdgesPruning{j}) ~= "drivebot.graph.LandmarkRangeBearingEdge")
+                            removeTheseIndices = [removeTheseIndices, j];
+                        end
+                    end
+                    %remove non landmark edges from cell array
+                    landmarkEdgesPruning(removeTheseIndices) = [];
+                    
+                    %again check if we have more landmarks than needed
+                    if(length(landmarkEdgesPruning)<=this.pruningLandmarkMaxEdges)
+                        continue
+                    end
+
+                    %if we have more than needed then we cycle through the
+                    %landmark edges and randomly remove edges until
+                    %pruningLandmarkMaxEdges landmark edges left
+                    length(landmarkEdgesPruning);
+                    indices_to_not_remove_from_graph = randperm(length(landmarkEdgesPruning));
+                    indices_to_not_remove_from_graph = indices_to_not_remove_from_graph(1:this.pruningLandmarkMaxEdges);
+                    
+                    %keep edges we want to remove from graph in the cell
+                    %array
+                    landmarkEdgesPruning(indices_to_not_remove_from_graph) = [];
+                       
+                    %now we remove the extra landmark edges
+                    for k = 1 : length(landmarkEdgesPruning)
+                        %associated_vehicle_vertex = landmarkEdgesPruning{k}.vertices()
+                        %associated_vehicle_vertex = associated_vehicle_vertex{1}
+                        %associated_vehicle_vertex.numberOfEdges()
+                        this.graph.removeEdge(landmarkEdgesPruning{k});
+                        %associated_vehicle_vertex.numberOfEdges()
+                        
+                    end
+                    
+
+                end
+            end
+
         end
         
         
